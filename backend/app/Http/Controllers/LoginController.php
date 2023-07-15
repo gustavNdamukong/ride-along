@@ -17,13 +17,13 @@ class LoginController extends Controller
         //send user a opne-time use code
         //return back to response
         $request->validate([
-            'name' => 'required|string',
+            //'name' => 'required|string',
             'phone' => 'required|numeric|min:10'
         ]);
 
         //create the model
         $user = User::firstOrCreate([
-            'name' => $request->name,
+            //'name' => $request->name,
             'phone' => $request->phone
         ]);
 
