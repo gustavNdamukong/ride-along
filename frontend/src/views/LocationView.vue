@@ -1,13 +1,15 @@
 <script setup>
-/////import { useLocationStore } from '@/stores/location'
+import { useLocationStore } from '@/stores/location'
 import { useRouter } from 'vue-router'
 
-///const location = useLocationStore()
+const location = useLocationStore()
 const router = useRouter()
 
 const handleLocationChanged = (e) => {
     console.log('handleLocationChanged', e)
-    return false;///////////
+    //return false;///////////
+    //$patch({}) takes an object, & is is used to update/overidde the default values of another object 
+    //that is structured like the one you pass to it. In this case we patch the location object.
     location.$patch({
         destination: {
             name: e.name,

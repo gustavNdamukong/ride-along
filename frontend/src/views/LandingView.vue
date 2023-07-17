@@ -1,18 +1,24 @@
 <script setup>
 import { useRouter } from 'vue-router'
-//import http from '@/helpers/http'
+import http from '@/helpers/http'
 
 const router = useRouter()
 
 const handleStartDriving = () => {
+  //check if current user is already registered as a driver. The 'api/driver' backend route
+  //will return any driver with the details of the current user
   http().get('/api/driver')
       .then((response) => {
           if (response.data.driver) {
               router.push({
+                  //already a driver (their details are already registered in the DB drivers table),so take them to standby 
+                  //screen where they can view and choose existing ride requests from passenger users 
                   name: 'standby'
               })
           } else {
               router.push({
+                  //new request to be a driver. This user has no details in the 'drivers' DB table, so show them
+                  //a form to enter their vehicle details to register as a driver
                   name: 'driver'
               })
           }
@@ -21,6 +27,7 @@ const handleStartDriving = () => {
           console.error(error)
       })
 }
+
 const handleFindARide = () => {
   router.push({
       name: 'location'

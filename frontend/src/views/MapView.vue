@@ -1,13 +1,13 @@
 <script setup>
-/////import { useLocationStore } from '@/stores/location'
-/////import { useTripStore } from '@/stores/trip'
-/////import http from '@/helpers/http'
+import { useLocationStore } from '@/stores/location'
+import { useTripStore } from '@/stores/trip.js'
+import http from '@/helpers/http'
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router'
 
-/////const location = useLocationStore()
-/////const trip = useTripStore()
+const location = useLocationStore()
+const trip = useTripStore()
 const router = useRouter()
 
 const gMap = ref(null)
@@ -29,8 +29,10 @@ const handleConfirmTrip = () => {
         })
 }
 
+//when user first hits this page, we want to record their current loc
 onMounted(async () => {
-    // does the user have a location set?
+    // does the user have a location set? if not send em back to the loc page so they can pick
+    //a destination first
     if (location.destination.name === '') {
         router.push({
             name: 'location'
@@ -77,12 +79,16 @@ onMounted(async () => {
                         <GMapMap v-if="location.destination.name !== ''" :zoom="11" :center="location.destination.geometry"
                             ref="gMap"
                             style="width: 100%; height: 256px;">
+                            <!--Add a marker (that will be nice). On 2nd thought, lets not show the marker. We're not just trying to show them where the loc is-->
+                            <!--but rather to show them directions on how to get there-->
+                            <!--<GMapMarker :position="location.destination.geometry" />-->
                         </GMapMap>
                     </div>
                     <div class="mt-2">
                         <p class="text-xl">Going to <strong>{{ location.destination.name }}</strong></p>
                     </div>
                 </div>
+
                 <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                     <button
                         @click="handleConfirmTrip"
