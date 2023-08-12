@@ -3,8 +3,8 @@ import { useLocationStore } from '@/stores/location'
 import { useTripStore } from '@/stores/trip'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
-//import Echo from 'laravel-echo'
-/////import Pusher from 'pusher-js'
+import Echo from 'laravel-echo'
+import Pusher from 'pusher-js'
 
 const location = useLocationStore()
 const trip = useTripStore()

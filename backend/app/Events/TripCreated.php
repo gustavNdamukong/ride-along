@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -9,10 +11,8 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Trip;
-use App\Models\User;
 
-class TripStarted
+class TripCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -36,12 +36,7 @@ class TripStarted
     public function broadcastOn(): array
     {
         return [
-            //new PrivateChannel('channel-name'),
-            new Channel('passenger_'.$this->user->id)
-            //broadcast on any channel (give it any name of your choice) so drivers will (subcribe to) & listen on 
-            //for events & respond. Her we call the channel 'drivers'. Subscribers (in this case drivers) will be listening for
-            //this event (TripStarted) on the 'drivers' channel
-            //new Channel('drivers')
+            new Channel('drivers')
         ];
     }
 }

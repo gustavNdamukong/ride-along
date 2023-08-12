@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import Loader from '@/components/Loader.vue'
 import { onMounted } from 'vue'
-/////import Echo from 'laravel-echo'
-/////import Pusher from 'pusher-js'
+import Echo from 'laravel-echo'
+import Pusher from 'pusher-js'
 import { useTripStore } from '@/stores/trip'
 import { useLocationStore } from '@/stores/location'
 import http from '@/helpers/http'
@@ -44,26 +44,36 @@ const handleAcceptTrip = () => {
 onMounted(async () => {
     await location.updateCurrentLocation()
 
-    /*let echo = new Echo({
+    let echo = new Echo({
+        //spec that here (on frontend) we are using pusher to broadcast, unlike websockets which was used on the backend
         broadcaster: 'pusher',
-        key: 'mykey',
-        cluster: 'mt1',
+        //key val must match the the val of PUSHER_APP_KEY in your backend .env file
+        key: 'myAppKey',
+        cluster: 'mt1', //default
+        //specify the websockets host-wh in this case is on same domain as this app
         wsHost: window.location.hostname,
-        wsPort: 6001,
+        wsPort: 6001, //default websockets port
+        /////wsPort: 5173, //default websockets port
         forceTLS: false,
         disableStats: true,
+        //enable info transfer over both websockets & secure web sockets
         enabledTransports: ['ws', 'wss']
-    })*/
+    })
 
-    /*echo.channel('drivers')
+    //Now you can subscribe to channels & listen for events on those channels
+    //Here we subscribe to the channel 'drivers' that was broadcasted on by the 'backend/app/Events/TripStarted.php', then listen for 
+    //a particular event 'TripStarted'. Note how in LV the convention is to name the event after the class where the channel is
+    echo.channel('drivers')
         .listen('TripCreated', (e) => {
             title.value = 'Ride requested:'
 
-            trip.$patch(e.trip)
-            console.log('TripCreated', e)
+            trip.$patch(e.trip);
+            console.log('TripCreated', e);
 
+            //gMap is initialized with null above, and there's a delay before the trip obj is patched, resulting in an 'gMap is null'
+            //error when view is loaded. Solution is to intro a 2 secs delay before calling initMapFunctions()
             setTimeout(initMapDirections, 2000)
-        })*/
+        })
 })
 
 const initMapDirections = () => {
@@ -113,10 +123,12 @@ const initMapDirections = () => {
                 <div class="flex justify-between bg-gray-50 px-4 py-3 text-right sm:px-6">
                     <button
                         @click="handleDeclineTrip"
-                        class="inline-flex justify-center rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-600 focus:outline-none">Decline</button>
+                        class="inline-flex justify-center rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium 
+                            text-white shadow-sm hover:bg-gray-600 focus:outline-none">Decline</button>
                     <button
                         @click="handleAcceptTrip"
-                        class="inline-flex justify-center rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-600 focus:outline-none">Accept</button>
+                        class="inline-flex justify-center rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium 
+                            text-white shadow-sm hover:bg-gray-600 focus:outline-none">Accept</button>
                 </div>
             </div>
         </div>

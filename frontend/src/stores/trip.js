@@ -17,6 +17,7 @@ export const useTripStore = defineStore('trip', () => {
         lat: null,
         lng: null
     })
+    
     const destination_name = ref('')
 
     const driver = reactive({

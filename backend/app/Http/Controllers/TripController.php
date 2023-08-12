@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TripCreated;
 use App\Events\TripAccepted;
 use App\Events\TripStarted;
 use App\Events\TripEnded;
@@ -26,11 +27,15 @@ class TripController extends Controller
             'destination_name' => 'required',
         ]);
 
-        $request->user()->trips()->create($request->only([
+        $trip = $request->user()->trips()->create($request->only([
             'origin',
             'destination',
             'destination_name'
         ]));
+
+        TripCreated::dispatch($trip, $request->user()); 
+
+        return $trip;
     }
 
     /**
@@ -66,6 +71,7 @@ class TripController extends Controller
 
     public function accept(Request $request, Trip $trip)
     {
+        die(var_dump($request));//////////
         //a driver accepts a trip
         //A driver is not naturally asscoc with  a trip, so we need to make that association as soon as the driver accpts the trip
         //the user's token will then be assoc with this trip model as being the driver in hthat trip (journey)

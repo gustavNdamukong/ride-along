@@ -32,7 +32,7 @@ Route::post('/login/verify', [LoginController::class, 'verify']);
 //we will be having several routes that use tokens in this app, so it makes sense to create a route group
 //The '/user' route grabs a user after authenticating the request using a token that was created for that user 
 //when the user verified their phone number using the secret sms code sent to them.
-Route::group(['middleware' =>'auth:sanctum'], function() {
+Route::group(['middleware' => 'auth:sanctum'], function() {
         //create or get & update a user
         Route::get('/driver', [DriverController::class, 'show']);
         Route::post('/driver', [DriverController::class, 'update']);
@@ -42,7 +42,7 @@ Route::group(['middleware' =>'auth:sanctum'], function() {
         Route::get('/trip/{trip}', [TripController::class, 'show']);
 
         //We need a route for when a driver accepts, starts, ends a trip, & we need to update the driver's location
-        Route::post('/trip/{trip}/accept', [TripController::class, 'accept']);
+        Route::post('/trip/{trip}/accept', [TripController::class, 'accept'])->middleware('cors');
         Route::post('/trip/{trip}/start', [TripController::class, 'start']);
         Route::post('/trip/{trip}/end', [TripController::class, 'end']);
         Route::post('/trip/{trip}/location', [TripController::class, 'location']);
@@ -53,5 +53,26 @@ Route::group(['middleware' =>'auth:sanctum'], function() {
         });
     }
 );
+
+/*Route::middleware(['cors, auth:sanctum'])->group(function() {
+    //create or get & update a user
+    Route::get('/driver', [DriverController::class, 'show']);
+    Route::post('/driver', [DriverController::class, 'update']);
+
+    //create & get a trip
+    Route::post('/trip', [TripController::class, 'store']);
+    Route::get('/trip/{trip}', [TripController::class, 'show']);
+
+    //We need a route for when a driver accepts, starts, ends a trip, & we need to update the driver's location
+    Route::post('/trip/{trip}/accept', [TripController::class, 'accept']);
+    Route::post('/trip/{trip}/start', [TripController::class, 'start']);
+    Route::post('/trip/{trip}/end', [TripController::class, 'end']);
+    Route::post('/trip/{trip}/location', [TripController::class, 'location']);
+
+    Route::get('/user', function(Request $request)
+    {
+        return $request->user();
+    });
+});*/
 
 
