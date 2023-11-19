@@ -37,11 +37,12 @@ class TripStarted
     {
         return [
             //new PrivateChannel('channel-name'),
+            //new Channel('passenger_'.$this->user->id) //lets use sth more generic channel eg 'drivers' that all 
+            //currently available passengers will listen to 
             new Channel('passenger_'.$this->user->id)
             //broadcast on any channel (give it any name of your choice) so drivers will (subcribe to) & listen on 
             //for events & respond. Her we call the channel 'drivers'. Subscribers (in this case drivers) will be listening for
             //this event (TripStarted) on the 'drivers' channel
-            //new Channel('drivers')
         ];
     }
 }

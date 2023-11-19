@@ -15,7 +15,6 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        ////return $next($request);
         /*$response = $next($request);
 
         //Allowed origins

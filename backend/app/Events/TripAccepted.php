@@ -39,6 +39,7 @@ class TripAccepted
             //we will not use a private channel coz it will involve a lot of authentication on the frontend to
             //connect to it. Rather, we will simply broadcast an event
             //new PrivateChannel('channel-name'),
+            //the below channel associated with a unique user is apt because a trip is ultimately started by one user. 
             new Channel('passenger_'.$this->user->id)
         ];
     }

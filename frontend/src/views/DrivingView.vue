@@ -4,7 +4,7 @@ import { useTripStore } from '@/stores/trip'
 import { useRouter } from 'vue-router'
 import { ref, onMounted, onUnmounted } from 'vue'
 import http from '@/helpers/http'
-/////import Tada from '@/components/Tada.vue'
+import Tada from '@/components/Tada.vue'
 
 const location = useLocationStore()
 const trip = useTripStore()
@@ -43,6 +43,7 @@ const updateMapBounds = (mapObject) => {
 }
 
 const broadcastDriverLocation = () => {
+    //do so with an API call
     http().post(`/api/trip/${trip.id}/location`, {
         driver_location: location.current.geometry
     })
@@ -90,7 +91,7 @@ const handleCompleteTrip = () => {
         })
 }
 
-onMounted(() => {
+onMounted(() => { //////
     gMap.value.$mapPromise.then((mapObject) => {
         updateMapBounds(mapObject)
 
@@ -98,11 +99,12 @@ onMounted(() => {
             // update the driver's current position and update map bounds
             await location.updateCurrentLocation()
 
-            // update the driver's position in the database
+            // update the driver's position in the database so that not just the driver but also the user 
+            //requesting the ride can access that info too, to see the progress of their driver.
             broadcastDriverLocation()
 
             updateMapBounds(mapObject)
-        }, 5000)
+        }, 5000) //update every 5 seconds  
     })
 })
 
@@ -122,6 +124,7 @@ onUnmounted(() => {
                     <div>
                         <GMapMap :zoom="14" :center="location.current.geometry" ref="gMap"
                             style="width:100%; height: 256px;">
+                            <!--GMapMarker allows u place marker points at spec points on ur map-->
                             <GMapMarker :position="location.current.geometry" :icon="currentIcon" />
                             <GMapMarker :position="location.destination.geometry" :icon="destinationIcon" />
                         </GMapMap>
@@ -141,11 +144,13 @@ onUnmounted(() => {
                         Passenger Picked Up</button>
                 </div>
             </div>
+
             <div class="overflow-hidden shadow sm:rounded-md max-w-sm mx-auto text-left" v-else>
                 <div class="bg-white px-4 py-5 sm:p-6">
                     <Tada />
                 </div>
             </div>
+
         </div>
     </div>
 </template>

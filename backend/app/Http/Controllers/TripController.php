@@ -71,17 +71,16 @@ class TripController extends Controller
 
     public function accept(Request $request, Trip $trip)
     {
-        die(var_dump($request));//////////
         //a driver accepts a trip
         //A driver is not naturally asscoc with  a trip, so we need to make that association as soon as the driver accpts the trip
         //the user's token will then be assoc with this trip model as being the driver in hthat trip (journey)
         $request->validate([
-            'driver_locati=on' => 'required'
+            'driver_location' => 'required'
         ]);
         
         $trip->update([
             'driver_id' => $request->user()->id,
-            //we need to record the driver's loc so we know where they're starting from
+            //we need to record the driver's loc  so we know where they're starting from
             'driver_location' => $request->driver_location,
         ]);
 
@@ -108,7 +107,7 @@ class TripController extends Controller
             'is_started' => true
         ]);
 
-        $trip->load('driver.user');
+        $trip->load('driver.user'); 
 
         TripStarted::dispatch($trip, $request->user());
 

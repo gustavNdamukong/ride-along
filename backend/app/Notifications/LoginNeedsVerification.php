@@ -33,7 +33,7 @@ class LoginNeedsVerification extends Notification
         //For every channel in this 'via' method; create a method just like 'toMail()' below that will use it to
         //fire off the actual notification 
         return [TwilioChannel::class];
-        /////return ['mail'];
+        //return ['mail'];
     }
 
     /**

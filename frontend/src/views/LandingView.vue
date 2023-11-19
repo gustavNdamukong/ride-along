@@ -6,7 +6,7 @@ const router = useRouter()
 
 const handleStartDriving = () => {
   //check if current user is already registered as a driver. The 'api/driver' backend route
-  //will return any driver with the details of the current user
+  //will return any driver with the details of the current (authenticated) user
   http().get('/api/driver')
       .then((response) => {
           if (response.data.driver) {

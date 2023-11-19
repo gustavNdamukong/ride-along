@@ -67,6 +67,7 @@ onMounted(() => {
           message.value = `${e.trip.driver.user.name} is coming in a ${e.trip.driver.year} ${e.trip.driver.color} ${e.trip.driver.make} ${e.trip.driver.model} with a license plate #${e.trip.driver.license_plate}`
       })
       .listen('TripLocationUpdated', (e) => {
+          //pathch the trip info broadcasted from backend into our tripStore 
           trip.$patch(e.trip)
 
           setTimeout(updateMapBounds, 1000)
@@ -110,7 +111,7 @@ onMounted(() => {
                       <GMapMap :zoom="14" :center="location.current.geometry" ref="gMap"
                           style="width:100%; height: 256px;">
                           <GMapMarker :position="location.current.geometry" :icon="currentIcon" />
-                          <GMapMarker :position="trip.driver_location" :icon="driverIcon" />
+                          <GMapMarker v-if="trip.driver_location" :position="trip.driver_location" :icon="driverIcon" />
                       </GMapMap>
                   </div>
               </div>

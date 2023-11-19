@@ -53,14 +53,14 @@ onMounted(async () => {
         //specify the websockets host-wh in this case is on same domain as this app
         wsHost: window.location.hostname,
         wsPort: 6001, //default websockets port
-        /////wsPort: 5173, //default websockets port
         forceTLS: false,
         disableStats: true,
-        //enable info transfer over both websockets & secure web sockets
+        //enable info transfer over both websockets (ws) & secure web sockets (wss)
+        //this allows us to deploy this feature on both http & https sites
         enabledTransports: ['ws', 'wss']
     })
 
-    //Now you can subscribe to channels & listen for events on those channels
+    //Now you can subscribe to specifc channel & then listen for any particular event on that channel (there could be many events on a channel)
     //Here we subscribe to the channel 'drivers' that was broadcasted on by the 'backend/app/Events/TripStarted.php', then listen for 
     //a particular event 'TripStarted'. Note how in LV the convention is to name the event after the class where the channel is
     echo.channel('drivers')
