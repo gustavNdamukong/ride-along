@@ -67,7 +67,7 @@ onMounted(() => {
           message.value = `${e.trip.driver.user.name} is coming in a ${e.trip.driver.year} ${e.trip.driver.color} ${e.trip.driver.make} ${e.trip.driver.model} with a license plate #${e.trip.driver.license_plate}`
       })
       .listen('TripLocationUpdated', (e) => {
-          //pathch the trip info broadcasted from backend into our tripStore 
+          //patch the trip info broadcasted from backend into our tripStore 
           trip.$patch(e.trip)
 
           setTimeout(updateMapBounds, 1000)
